@@ -505,8 +505,8 @@ self.props = {
 	title: '${self.props.title}', default_root_id: '${self.props.default_root_id}', 
 	api: location.protocol + '//' + location.host, 
 	auth: ${self.props.auth},
-	user: ${self.props.user},
-	pass: ${self.props.pass},
+	user: '${self.props.user}',
+	pass: '${self.props.pass}',
 	upload: ${self.props.upload},
 	export_url: ${self.props.export_url},
 	download_aria2: ${self.props.download_aria2}
