@@ -49,5 +49,7 @@ export default {
 		请求可能会被阻止。你可以使用 HTTPS 请求 aria2，或者关闭浏览器的非安全内容阻拦。`,
     fetchConcurrency: '文件获取并行数',
     fetchRetryTimes: '文件获取重试数',
-    $vuetify
+	optionSplit: '单任务连接数',
+	optionMaxConnectionPerServer:"单服务器最大连接数",
+	$vuetify
 };

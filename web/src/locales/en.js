@@ -46,5 +46,7 @@ export default {
 		Due to browsers limitation, aria2's HTTP requests may be blocked.
 		You can request aria2 via HTTPS or disabling insecure content blocking.`,
     fetchConcurrency: 'Fetch Concurrency',
-    fetchRetryTimes: 'Fetch retry times'
+    fetchRetryTimes: 'Fetch retry times',
+	optionSplit: 'Split',
+	optionMaxConnectionPerServer:"Max Connection Per Server"
 };
