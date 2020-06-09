@@ -3,7 +3,7 @@ import GoogleDrive from './googleDrive';
 
 const gd = new GoogleDrive(self.props);
 const resourceBaseUrl =
-    self.props.resource_base_url || 'https://raw.githubusercontent.com/CodeingBoy/GDIndex/master/web/dist/';
+    self.props.resource_base_url || 'https://raw.githubusercontent.com/tofuliang/GDIndex/master/web/dist/';
 
 const HTML = `
 <!DOCTYPE html>
@@ -18,6 +18,9 @@ const HTML = `
 <script>window.props = { 
 	title: '${self.props.title}', default_root_id: '${self.props.default_root_id}', 
 	api: location.protocol + '//' + location.host, 
+	auth: ${self.props.auth},
+	user: ${self.props.user},
+	pass: ${self.props.pass},
 	upload: ${self.props.upload},
 	export_url: ${self.props.export_url},
 	download_aria2: ${self.props.download_aria2}

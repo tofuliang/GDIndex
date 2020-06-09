@@ -10,6 +10,8 @@ const KEY_ARIA2_RPC_TOKEN = 'ARIA2_RPC_TOKEN';
 const KEY_ARIA2_DOWNLOAD_PATH = 'ARIA2_DOWNLOAD_PATH';
 const KEY_FETCH_CONCURRENCY = 'DOWNLOAD_FETCH_CONCURRENCY';
 const KEY_FETCH_RETRY_TIMES = 'DOWNLOAD_FETCH_RETRY_TIMES';
+const KEY_OPTION_SPLIT = 'OPTION_SPLIT';
+const KEY_OPTION_MAX_CONNECTION_PER_SERVER = 'OPTION_MAX_CONNECTION_PER_SERVER';
 
 function getStringFromLocalStorage(key, defaultValue) {
     return localStorage.getItem(key) || defaultValue;
@@ -85,6 +87,26 @@ const aria2Support = {
 
         return setStringToLocalStorage(KEY_FETCH_RETRY_TIMES, retry_times);
     },
+    getOptionSplit: function() {
+        return Number(getStringFromLocalStorage(KEY_OPTION_SPLIT, '2'));
+    },
+    setOptionSplit: function(option_split) {
+        if (Number.isNaN(Number(option_split))) {
+            return false;
+        }
+
+        return setStringToLocalStorage(KEY_OPTION_SPLIT, option_split);
+    },
+    getOptionMaxConnectionPerServer: function() {
+        return Number(getStringFromLocalStorage(KEY_OPTION_MAX_CONNECTION_PER_SERVER, '2'));
+    },
+    setOptionMaxConnectionPerServer: function(option_MaxConnectionPerServer) {
+        if (Number.isNaN(Number(option_MaxConnectionPerServer))) {
+            return false;
+        }
+
+        return setStringToLocalStorage(KEY_OPTION_MAX_CONNECTION_PER_SERVER, option_MaxConnectionPerServer);
+    },
     init: function() {
         const options = {
             host: this.getRpcHost(),
@@ -109,6 +131,10 @@ const aria2Support = {
         const option = {
             dir: downloadPath
         };
+        if (window.props.auth) {
+            option['http-user'] = window.props.user;
+            option['http-passwd'] = window.props.pass;
+        }
 
         return await this.aria2.call('addUri', [url], option);
     }

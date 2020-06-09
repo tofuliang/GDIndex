@@ -1,11 +1,13 @@
 name: Build worker
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - master
-    paths: 
+    paths:
       - worker/**
+  watch:
+    types: [started]
 
 jobs:
   build:

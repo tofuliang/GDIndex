@@ -1,11 +1,13 @@
 name: Build web
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - master
-    paths: 
+    paths:
       - web/**
+  watch:
+    types: [started]
 
 jobs:
   build:

@@ -33,6 +33,15 @@
                     <v-row>
                         <v-text-field :label="$t('fetchRetryTimes')" v-model="fetchRetryTimes"></v-text-field>
                     </v-row>
+                    <v-row>
+                        <v-text-field :label="$t('optionSplit')" v-model="optionSplit"></v-text-field>
+                    </v-row>
+                    <v-row>
+                        <v-text-field
+                            :label="$t('optionMaxConnectionPerServer')"
+                            v-model="optionMaxConnectionPerServer"
+                        ></v-text-field>
+                    </v-row>
                 </v-container>
                 <v-alert dense type="warning" v-if="shouldShowAriaHTTPSWarning">
                     {{ $t('aria2HTTPSWarning') }}
@@ -77,7 +86,9 @@ export default {
             testStatus: -1,
             testVersion: '',
             testFailedReason: '',
-            shouldShowAriaHTTPSWarning: false
+            shouldShowAriaHTTPSWarning: false,
+            optionSplit: '2',
+            optionMaxConnectionPerServer: '2'
         };
     },
     computed: {},
@@ -100,6 +111,8 @@ export default {
             this.downloadPath = aria2.getDownloadPath();
             this.fetchConcurrency = aria2.getFetchConcurrency();
             this.fetchRetryTimes = aria2.getFetchRetryTimes();
+            this.optionSplit = aria2.getOptionSplit();
+            this.optionMaxConnectionPerServer = aria2.getOptionMaxConnectionPerServer();
 
             this.shouldShowAriaHTTPSWarning = util.usingHTTPS() && !this.rpcSecure;
         },
@@ -112,6 +125,8 @@ export default {
             aria2.setDownloadPath(this.downloadPath);
             aria2.setFetchConcurrency(this.fetchConcurrency);
             aria2.setFetchRetryTimes(this.fetchRetryTimes);
+            aria2.setOptionSplit(this.optionSplit);
+            aria2.setOptionMaxConnectionPerServer(this.optionMaxConnectionPerServer);
         },
         test: function() {
             this.save();
