@@ -129,7 +129,9 @@ const aria2Support = {
             this.init();
         }
         const option = {
-            dir: downloadPath
+            dir: downloadPath,
+            split: this.getOptionSplit() + '',
+            'max-connection-per-server': this.getOptionMaxConnectionPerServer() + ''
         };
         if (window.props.auth) {
             option['http-user'] = window.props.user;
