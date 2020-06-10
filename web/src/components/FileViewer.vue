@@ -246,7 +246,7 @@ export default {
         getFileUrl(path) {
             const { rootId } = this.$route.query;
             let u = nodeUrl.resolve(
-                window.props.api,
+                window.props.auth?window.props.api.replace('//',`//${window.props.user}:${window.props.pass}@`):window.props.api,
                 path
                     .split('/')
                     .map(encodeURIComponent)
