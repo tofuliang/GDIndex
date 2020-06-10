@@ -47,6 +47,6 @@ export default {
 		You can request aria2 via HTTPS or disabling insecure content blocking.`,
     fetchConcurrency: 'Fetch Concurrency',
     fetchRetryTimes: 'Fetch retry times',
-	optionSplit: 'Split',
-	optionMaxConnectionPerServer:"Max Connection Per Server"
+    optionSplit: 'Split',
+    optionMaxConnectionPerServer: 'Max Connection Per Server'
 };

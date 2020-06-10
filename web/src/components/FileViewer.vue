@@ -59,10 +59,27 @@
                                 </v-icon>
                             </v-btn>
                         </v-list-item-action>
+                        <v-list-item-action>
+                            <v-btn
+                                icon
+                                v-if="!item.isFolder && !item.isGoogleFile"
+                                @click.stop.prevent="exportToAria2(item)"
+                            >
+                                <v-icon color="black">
+                                    mdi-cloud-download
+                                </v-icon>
+                            </v-btn>
+                        </v-list-item-action>
                     </v-list-item>
                 </v-card>
             </v-col>
         </v-row>
+        <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="snackbar.timeout">
+            {{ snackbar.text }}
+            <v-btn dark text @click="snackbar.show = false">
+                {{ $t('close') }}
+            </v-btn>
+        </v-snackbar>
     </v-container>
 </template>
 <script>
@@ -79,6 +96,7 @@ import UrlExportDialog from './UrlExportDialog';
 import Aria2DownloadDialog from './Aria2DownloadDialog';
 import Aria2SettingsDialog from './Aria2SettingsDialog';
 import util from '../util';
+import aria2 from '../aria2';
 
 const SUPPORTED_TYPES = {
     'application/epub+zip': 'epub',
@@ -148,7 +166,13 @@ export default {
             renderStart: null,
             uploadEnabled: window.props.upload,
             showUploadDialog: false,
-            error: ''
+            error: '',
+            snackbar: {
+                show: false,
+                text: '',
+                timeout: 5000,
+                color: 'success'
+            }
         };
     },
     computed: {
@@ -177,6 +201,30 @@ export default {
         }
     },
     methods: {
+        async exportToAria2(item) {
+            let baseDownloadPath = aria2.getDownloadPath();
+            if (baseDownloadPath.substr(-1) === '/') {
+                baseDownloadPath = baseDownloadPath.substr(0, baseDownloadPath.length - 1);
+            }
+            try {
+                const addResult = await aria2.addDownload(
+                    this.getFileUrl(item.resourcePath),
+                    baseDownloadPath +
+                        item.resourcePath
+                            .split('/')
+                            .map(decodeURIComponent)
+                            .join('/')
+                );
+                this.snackbar.text = `成功导出 ${item.fileName} 到 Aria2`;
+                this.snackbar.color = 'success';
+                this.snackbar.show = true;
+            } catch (e) {
+                this.snackbar.text = e;
+                this.snackbar.color = 'error';
+                this.snackbar.show = true;
+                return;
+            }
+        },
         goPath(path, opener) {
             this.error = '';
 

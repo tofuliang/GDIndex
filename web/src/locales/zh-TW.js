@@ -49,7 +49,7 @@ export default {
 	HTTPS 請求 aria2，或者關閉瀏覽器的非安全內容阻攔。`,
     fetchConcurrency: '文件獲取並行數',
     fetchRetryTimes: '文件獲取重試數',
-	optionSplit: '單任務連接數',
-	optionMaxConnectionPerServer:"單服務器最大連接數",
-	$vuetify
+    optionSplit: '單任務連接數',
+    optionMaxConnectionPerServer: '單服務器最大連接數',
+    $vuetify
 };
