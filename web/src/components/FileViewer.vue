@@ -208,7 +208,10 @@ export default {
             }
             try {
                 const addResult = await aria2.addDownload(
-                    this.getFileUrl(item.resourcePath),
+                    this.getFileUrl(item.resourcePath)
+                        .split('/')
+                        .map(decodeURIComponent)
+                        .join('/'),
                     baseDownloadPath +
                         item.resourcePath
                             .split('/')
@@ -246,7 +249,9 @@ export default {
         getFileUrl(path) {
             const { rootId } = this.$route.query;
             let u = nodeUrl.resolve(
-                window.props.auth?window.props.api.replace('//',`//${window.props.user}:${window.props.pass}@`):window.props.api,
+                window.props.auth
+                    ? window.props.api.replace('//', `//${window.props.user}:${window.props.pass}@`)
+                    : window.props.api,
                 path
                     .split('/')
                     .map(encodeURIComponent)
