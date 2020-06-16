@@ -146,7 +146,13 @@ export default {
             while (downloadFileInfos.length) {
                 const f = downloadFileInfos.pop();
                 try {
-                    const addResult = await aria2.addDownload(f.url, f.downloadPath);
+                    const addResult = await aria2.addDownload(
+                        f.url
+                            .split('/')
+                            .map(decodeURIComponent)
+                            .join('/'),
+                        f.downloadPath
+                    );
                 } catch (e) {
                     this.failReason = e;
                     this.status = 5;
