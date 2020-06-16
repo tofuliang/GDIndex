@@ -207,16 +207,22 @@ export default {
                 baseDownloadPath = baseDownloadPath.substr(0, baseDownloadPath.length - 1);
             }
             try {
+                let path = nodePath.dirname(
+                    item.resourcePath
+                        .split('/')
+                        .map(decodeURIComponent)
+                        .join('/')
+                );
+                if (path === '.') {
+                    path = '';
+                }
+
                 const addResult = await aria2.addDownload(
                     this.getFileUrl(item.resourcePath)
                         .split('/')
                         .map(decodeURIComponent)
                         .join('/'),
-                    baseDownloadPath +
-                        item.resourcePath
-                            .split('/')
-                            .map(decodeURIComponent)
-                            .join('/')
+                    baseDownloadPath + path
                 );
                 this.snackbar.text = `成功导出 ${item.fileName} 到 Aria2`;
                 this.snackbar.color = 'success';
