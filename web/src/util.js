@@ -37,31 +37,39 @@ const resolvePath = (base, p) => {
 };
 
 const listItems = async (path, rootId) => {
-    let { files } = await api
-        .post(path, {
-            method: 'POST',
-            qs: {
-                rootId
-            }
-        })
-        .json();
-    files = files.map(f => {
-        f.mimeType = f.mimeType.replace('; charset=utf-8', '');
-        const isFolder = f.mimeType === 'application/vnd.google-apps.folder';
-        let resourcePath = resolvePath(path, replaceSpecialCharacter(f.name)) + (isFolder ? '/' : '');
-        const url = getFileUrl(resourcePath, rootId);
-        const o = {
-            fileName: f.name,
-            isFolder,
-            mimeType: f.mimeType,
-            fileSize: f.size ? prettyBytes(parseInt(f.size)) : '',
-            fileRawSize: parseInt(f.size || '0'),
-            path: resourcePath,
-            url
-        };
-        return o;
-    });
-    return files;
+    let finished = false;
+    while (!finished) {
+        try {
+            let { files } = await api
+                .post(path, {
+                    method: 'POST',
+                    qs: {
+                        rootId
+                    }
+                })
+                .json();
+            files = files.map(f => {
+                f.mimeType = f.mimeType.replace('; charset=utf-8', '');
+                const isFolder = f.mimeType === 'application/vnd.google-apps.folder';
+                let resourcePath = resolvePath(path, replaceSpecialCharacter(f.name)) + (isFolder ? '/' : '');
+                const url = getFileUrl(resourcePath, rootId);
+                const o = {
+                    fileName: f.name,
+                    isFolder,
+                    mimeType: f.mimeType,
+                    fileSize: f.size ? prettyBytes(parseInt(f.size)) : '',
+                    fileRawSize: parseInt(f.size || '0'),
+                    path: resourcePath,
+                    url
+                };
+                return o;
+            });
+            finished = true;
+            return files;
+        } catch (e) {
+            console.log(e);
+        }
+    }
 };
 
 const getPathItems = (path, rootId, recursive = true, concurrency = 3, retry = 3, onProgressUpdate = null) => {
